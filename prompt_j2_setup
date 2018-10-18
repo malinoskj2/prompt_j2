@@ -1,0 +1,122 @@
+#!/usr/local/bin/zsh
+autoload -U colors && colors
+autoload -Uz add-zsh-hook
+autoload -Uz zsh/zle
+autoload -Uz vcs_info
+
+
+prompt_j2_setup() {
+
+  prompt_opts=( subst
+                percent
+                bang )
+
+  init_globals
+
+  #Hooks
+  add-zsh-hook precmd  dyn_exit         # shows symbol base on exit status for limited period of time
+                                        # reverting to a default delimiter after
+
+  #add-zsh-hook precmd vcs_cfg          #TODO not needed until git impl
+  #add-zsh-hook precmd top_right        #TODO impl adaptive second row for git (collapsed for past commands)
+  add-zsh-hook precmd compose_ps1
+  add-zsh-hook precmd compose_rps1
+}
+
+init_globals() {
+
+  #The symbol surround your username + their color
+  NAME_OUTR_LEFT="["
+  NAME_OUTR_RIGHT="]"
+  NAME_OUTR_COLOR=yellow
+
+  # symbols for adaptive delimiter
+  DEF_OUT="‣"    # default symbol delimiting prompt from command
+  SUCC_OUT="✓"   # symbol to be temporarily shown after a command exits with status 0
+  FAIL_OUT="x"   # symbol to be temporarily shown after a command exits with status 1
+  STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
+
+  # directory context info
+  DIR_NAME="$(basename `pwd`)/"
+
+  # directory context styling
+  DIR_SYM=▪      # symbol next to directory name
+  DCOLOR=blue    # color of symbol next to dir
+
+  # branch context styling
+  BRANCH_SYM=▪   # symbol next to git branch name
+  BCOLOR=green   # color of symbol next to branch name
+
+}
+
+compose_ps1() {
+
+  local ptr_succ="%{$fg[green]%}${SUCC_OUT}%{$reset_color%}"
+  local ptr_fail="%{$fg[red]%}${FAIL_OUT}%{$reset_color%}"
+  local name_sec="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
+
+  PS1="$name_sec %(?.$ptr_succ.$ptr_fail) "
+
+}
+
+compose_rps1() {
+  local dsymbol=%{$fg[$DCOLOR]%}$DIR_SYM%{$reset_color%}
+  RPS1="$dsymbol $DIR_NAME"
+}
+
+# Kill any scheduled events that have not been executed before a new command is entered
+# TODO remove dependency on sched,
+# use zsh async lib potentially
+kill_outstanding_scheds() {
+  for ((i = 1; i <= $#zsh_scheduled_events; i++)); do
+    sched -$i
+  done
+}
+
+# Overrides default prompt enter key functionality
+# allows for logic before and after passing a command
+# to zsh
+# Called whenever enter is pressed
+hook-accept-line() {
+
+  kill_outstanding_scheds
+
+  PS1="$DEF_OUT "
+  RPS1=""
+  zle reset-prompt
+  zle accept-line
+
+}
+zle -N hook-accept-line
+bindkey "^M" hook-accept-line
+
+
+dyn_exit(){
+	sched +$STAT_IND_LEN delim_reset
+}
+
+delim_reset(){
+  local NAME_SEC="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
+
+  PS1="$NAME_SEC $DEF_OUT "
+
+  zle && zle reset-prompt
+
+}
+
+top_right() {
+     local BRANCH_NAME=${vcs_info_msg_0_}
+     local BNAME_LEN=${#BRANCH_NAME}
+     local BSYMBOL=$fg[${DCOLOR}]$BRANCH_SYM$reset_color
+     local BOUT="${BSYMBOL} ${BRANCH_NAME}"
+     local BRANCH_PADDING
+     (( BRANCH_PADDING = $COLUMNS + 10 ))
+     printf '%*s\n' "$BRANCH_PADDING" "$BOUT" #print top right
+}
+
+# TODO impl git
+vcs_cfg() {
+    vcs_info
+    zstyle ':vcs_info:*' enable git
+    zstyle ':vcs_info:git:*' formats '[%b]'
+}
