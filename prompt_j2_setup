@@ -39,11 +39,11 @@ init_globals() {
   DIR_NAME="$(basename `pwd`)/"
 
   # directory context styling
-  DIR_SYM=▪      # symbol next to directory name
+  DIR_SYM="▪ "      # symbol next to directory name
   DCOLOR=blue    # color of symbol next to dir
 
   # branch context styling
-  BRANCH_SYM=▪   # symbol next to git branch name
+  BRANCH_SYM=⎇   # symbol next to git branch name
   BCOLOR=green   # color of symbol next to branch name
 
 }
@@ -115,7 +115,7 @@ compose_ps1() {
 
 compose_rps1() {
   local dsymbol=%{$fg[$DCOLOR]%}$DIR_SYM%{$reset_color%}
-  RPS1="$dsymbol $DIR_NAME"
+  RPS1="${dsymbol}${DIR_NAME}"
 }
 
 # Kill any scheduled events that have not been executed before a new command is entered
