@@ -4,7 +4,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz zsh/zle
 autoload -Uz vcs_info
 
-
 prompt_j2_setup() {
 
   prompt_opts=( subst
@@ -13,16 +12,13 @@ prompt_j2_setup() {
 
   init_globals
 
-  #Hooks
-      # shows symbol base on exit status for limited period of time
-                                        # reverting to a default delimiter after
-
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
   add-zsh-hook precmd  dyn_exit
+
+  add-zsh-hook precmd comp_prompt_variants
   add-zsh-hook precmd compose_ps1
   add-zsh-hook precmd compose_rps1
-
 
 }
 
@@ -56,7 +52,6 @@ init_globals() {
 
 }
 
-
 # TODO impl git
 vcs_cfg() {
     vcs_info
@@ -72,23 +67,52 @@ compose_vcs() {
 
   let BOUT_LEN="$(echo $#branch_name) + $#bsym_len - 4"
   BOUT="${BSYMBOL} ${branch_name}"
+  
+  len=$BOUT_LEN
+  ((  left_padding_len =  $COLUMNS - len - 5 ))
+  LEFT_PADDING=${(l:${left_padding_len}:: ::$BOUT:)}
+}
+
+
+comp_prompt_variants() {
+
+  PTR_SUCC="%{$fg[green]%}${SUCC_OUT}%{$reset_color%}"
+  PTR_FAIL="%{$fg[red]%}${FAIL_OUT}%{$reset_color%}"
+  NAME_SEC="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
+  
+}
+
+set_dyn() {
+  PS1="${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "   
+}
+
+set_2ldyn() {
+  
+  PS1="${LEFT_PADDING}${PRMPT_NEWLIN}${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "
+
+}
+
+set_stat() {
+  PS1="${NAME_SEC} ${DEF_OUT} "
+}
+
+set_2lstat(){
+        PS1="${LEFT_PADDING}${PRMPT_NEWLIN}${NAME_SEC} ${DEF_OUT} "
+}
+
+set_minimal() {
+  PS1="$DEF_OUT "
+  RPS1="-"
 }
 
 compose_ps1() {
-  local ptr_succ="%{$fg[green]%}${SUCC_OUT}%{$reset_color%}"
-  local ptr_fail="%{$fg[red]%}${FAIL_OUT}%{$reset_color%}"
-  local name_sec="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
 
   len=$BOUT_LEN
 
   if [[ $len -gt 0 ]]; then
-
-    ((  left_padding =  $COLUMNS - len - 5 ))
-
-        PS1="${(l:${left_padding}:: ::$BOUT:)}${PRMPT_NEWLIN}${name_sec} %(?.$ptr_succ.$ptr_fail) "
-
+	set_2ldyn
   else
-        PS1="${name_sec} %(?.$ptr_succ.$ptr_fail) "
+	set_dyn
   fi
 
 }
@@ -114,9 +138,9 @@ kill_outstanding_scheds() {
 hook-accept-line() {
 
   kill_outstanding_scheds
+  
+  set_minimal
 
-  PS1="$DEF_OUT "
-  RPS1="-"
   zle reset-prompt
   zle accept-line
 
@@ -124,29 +148,19 @@ hook-accept-line() {
 zle -N hook-accept-line
 bindkey "^M" hook-accept-line
 
-
 dyn_exit(){
 	sched +$STAT_IND_LEN delim_reset
 }
 
 delim_reset(){
-  local name_sec="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
-
-len=$BOUT_LEN
 
   if [[ $len -gt 0 ]]; then
-
-    ((  left_padding =  $COLUMNS - len - 5 ))
-
-
-        PS1="${(l:${left_padding}:: ::$BOUT:)}${PRMPT_NEWLIN}${name_sec} ${DEF_OUT} "
-
+        set_2lstat
   else
-        PS1="${name_sec} ${DEF_OUT} "
+	set_stat
   fi
 
   zle && zle reset-prompt
-
 }
 
 
