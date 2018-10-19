@@ -1,8 +1,4 @@
 #!/usr/local/bin/zsh
-autoload -U colors && colors
-autoload -Uz add-zsh-hook
-autoload -Uz zsh/zle
-autoload -Uz vcs_info
 
 prompt_j2_setup() {
 

@@ -1,0 +1,16 @@
+# Reponsible for autoloading the module's dependencies
+
+# Set the theme to use ;)
+zprompt_theme='j2'
+
+# Autoload dependencies
+autoload -Uz promptinit
+autoload -U colors && colors
+autoload -Uz add-zsh-hook
+autoload -Uz zsh/zle
+autoload -Uz vcs_info
+ 
+promptinit
+prompt j2
+prompt j2
+prompt j2
