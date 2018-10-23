@@ -52,6 +52,8 @@ init_globals() {
   BRANCH_SYM=⎇   # symbol next to git branch name
   BCOLOR=green   # color of symbol next to branch name
 
+  #pastcmd color
+  PAST_CMD_COLOR=magenta; # The color that past entered cmds will show as
 }
 
 # TODO impl git
@@ -145,8 +147,15 @@ hook-accept-line() {
   
   set_minimal
 
+  local init_buffer=${fg[$PAST_CMD_COLOR]}${BUFFER}${reset_color}
+  # local init_buffer=$BUFFER
+
   zle reset-prompt
+  
   zle accept-line
+#  print -N "$init_buffer"
+  echo -en "\r${PS1}${init_buffer}"
+ # LBUFFER="lbuffer test"
 
 }
 zle -N hook-accept-line
