@@ -8,15 +8,23 @@ prompt_j2_setup() {
 
   init_globals
 
+  add-zsh-hook precmd dir_cfg
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
   add-zsh-hook precmd  dyn_exit
-
   add-zsh-hook precmd comp_prompt_variants
   add-zsh-hook precmd compose_ps1
   add-zsh-hook precmd compose_rps1
 
 }
+
+dir_cfg() {
+
+  # directory context info
+  DIR_NAME=${$(pwd)}
+
+}
+
 
 init_globals() {
 
@@ -35,8 +43,6 @@ init_globals() {
   FAIL_OUT="x"   # symbol to be temporarily shown after a command exits with status 1
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
 
-  # directory context info
-  DIR_NAME="$(basename `pwd`)/"
 
   # directory context styling
   DIR_SYM="▪ "      # symbol next to directory name
