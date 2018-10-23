@@ -11,26 +11,22 @@ prompt_j2_setup() {
   add-zsh-hook precmd dir_cfg
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
-  add-zsh-hook precmd  dyn_exit
+
+  add-zsh-hook precmd dyn_exit
+
   add-zsh-hook precmd comp_prompt_variants
   add-zsh-hook precmd compose_ps1
   add-zsh-hook precmd compose_rps1
 
+  prompt_cleanup cleanup
 }
 
 dir_cfg() {
-
   # directory context info
   DIR_NAME=${$( basename $(pwd))}
-
 }
 
-
 init_globals() {
-
-  # utility
-
-  PRMPT_NEWLIN=$'\r%{\n%}%{\r%}'
 
   #The symbols surrounding your username
   NAME_OUTR_LEFT="["
@@ -161,6 +157,7 @@ hook-accept-line() {
 zle -N hook-accept-line
 bindkey "^M" hook-accept-line
 
+
 dyn_exit(){
 	sched +$STAT_IND_LEN delim_reset
 }
@@ -176,5 +173,9 @@ delim_reset(){
   zle && zle reset-prompt
 }
 
-
+cleanup() {
+  zle && 
+  bindkey "^M" .accept-line
+}
+zle -N cleanup
 
