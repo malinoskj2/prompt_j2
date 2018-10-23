@@ -57,15 +57,12 @@ vcs_cfg() {
 
 compose_vcs() {
   local branch_name=${vcs_info_msg_0_}
- #local BSYMBOL=$fg[${DCOLOR}]${BRANCH_SYM}${reset_color}
-
   local BSYMBOL="%{$fg[green]%}${BRANCH_SYM}%{$reset_color%}"
 
   let bsym_len="$#BSYMBOL / 4"
 
   let BOUT_LEN="$(echo $#branch_name) + $#bsym_len - 4"
- BOUT="${BSYMBOL} ${branch_name}"
- # BOUT="${branch_name}"
+  BOUT="${BSYMBOL} ${branch_name}"
   
   len=$BOUT_LEN
   ((  left_padding_len =  $COLUMNS - len - 1 ))
