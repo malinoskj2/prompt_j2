@@ -21,7 +21,7 @@ prompt_j2_setup() {
 dir_cfg() {
 
   # directory context info
-  DIR_NAME=${$(pwd)}
+  DIR_NAME=${$( basename $(pwd))}
 
 }
 
