@@ -1,16 +1,23 @@
 # Reponsible for autoloading the module's dependencies
 
+SCRIPT_DIR=${0:a:h}
+
+
 # Set the theme to use ;)
 zprompt_theme='j2'
 
 # Autoload dependencies
+source "${SCRIPT_DIR}/mod/zsh-async/async.zsh"
+
 autoload -Uz promptinit
 autoload -U colors && colors
 autoload -Uz add-zsh-hook
 autoload -Uz zsh/zle
 autoload -Uz vcs_info
- 
+
+async_init 
 promptinit
+
 prompt j2
 prompt j2
 prompt j2
