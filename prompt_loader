@@ -21,3 +21,6 @@ promptinit
 prompt j2
 prompt j2
 prompt j2
+
+ZSH_AUTOSUGGEST_USE_ASYNC=true;
+source "$SCRIPT_DIR/mod/zsh-autosuggestions/zsh-autosuggestions.zsh"
