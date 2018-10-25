@@ -7,18 +7,24 @@ prompt_j2_setup() {
                 bang )
 
   init_globals
+  init_async
 
   add-zsh-hook precmd dir_cfg
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
 
+  add-zsh-hook precmd kill_outstanding_scheds
   add-zsh-hook precmd dyn_exit
+  add-zsh-hook preexec kill_outstanding_scheds
 
   add-zsh-hook precmd comp_prompt_variants
   add-zsh-hook precmd compose_ps1
   add-zsh-hook precmd compose_rps1
 
+  add-zsh-hook precmd show_cursor
+
   prompt_cleanup cleanup
+
 }
 
 dir_cfg() {
@@ -26,12 +32,79 @@ dir_cfg() {
   DIR_NAME=${$( basename $(pwd))}
 }
 
+set_stat_time() {
+  local cur_time='[%D{%L:%M:%S %p}]'
+#  PS1="${NAME_SEC} $cur_time ${DEF_OUT} "
+  PS1="${NAME_SEC} $cur_time "
+}
+
+set_stat_spinner() {
+
+    local spinner=("🕛"
+                   "🕐"
+                   "🕑"
+                   "🕒"
+                   "🕓"
+                   "🕔"
+                   "🕕"
+                   "🕖"
+                   "🕗"
+                   "🕘"
+                   "🕙"
+                   "🕚" )
+   let "spin_index = ($IDLE_CTR % $#spinner) + 1"
+   let "midpoint = $COLUMNS / 2 + 34"
+
+   if [[ $TTYIDLE -lt 60 ]]; then
+     local away_time=$TTYIDLE
+     local away_time="$away_time sec"
+   elif [[ $TTYIDLE -lt 3600 ]]; then
+     let "away_time = $TTYIDLE / 60"
+     local away_time="$away_time min"
+   else
+     let "away_time = $TTYIDLE / 3600"
+     local away_time="$away_time hours"
+   fi
+
+   local mid_clock=${(l:${midpoint}:: ::${spinner[$spin_index]} idle ${away_time}  :)}
+   print -PN "\r${mid_clock}"
+   hide_cursor
+   let "IDLE_CTR = $IDLE_CTR + 1"
+}
+
+show_cursor(){
+   print -PN "\e[?25h"
+}
+
+hide_cursor(){
+   print -PN "\e[?25l"
+}
+
+init_async() {
+   IDLE_CTR=0
+
+   async_start_worker time_updater -n
+
+    callback() {
+      if [[ "$TTYIDLE" -gt  "1800" ]]; then
+        set_stat_spinner
+        async_job time_updater sleep .5
+      else
+         async_job time_updater sleep 3
+      fi
+    }
+
+  async_register_callback time_updater callback
+
+  async_job  time_updater sleep 1
+}
+
 init_globals() {
 
   #The symbols surrounding your username
   NAME_OUTR_LEFT="["
   NAME_OUTR_RIGHT="]"
-  NAME_OUTR_COLOR=yellow # the symbol color
+  NAME_OUTR_COLOR=green # the symbol color
 
   # symbols for adaptive delimiter
   DEF_OUT="‣"    # default symbol delimiting prompt from command
@@ -39,20 +112,18 @@ init_globals() {
   FAIL_OUT="x"   # symbol to be temporarily shown after a command exits with status 1
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
 
-
   # directory context styling
   DIR_SYM="▪ "      # symbol next to directory name
-  DCOLOR=blue    # color of symbol next to dir
+  DCOLOR=cyan    # color of symbol next to dir
 
   # branch context styling
   BRANCH_SYM=⎇   # symbol next to git branch name
   BCOLOR=green   # color of symbol next to branch name
 
   #pastcmd color
-  PAST_CMD_COLOR=magenta; # The color that past entered cmds will show as
+  PAST_CMD_COLOR=yellow; # The color that past entered cmds will show as
 }
 
-# TODO impl git
 vcs_cfg() {
     vcs_info
     zstyle ':vcs_info:*' enable git
@@ -105,6 +176,7 @@ ${NAME_SEC} ${DEF_OUT} "
 set_minimal() {
   PS1="$DEF_OUT "
   RPS1="-"
+
 }
 
 compose_ps1() {
@@ -139,8 +211,6 @@ kill_outstanding_scheds() {
 # Called whenever enter is pressed
 hook-accept-line() {
 
-  kill_outstanding_scheds
-  
   set_minimal
 
   local init_buffer=${fg[$PAST_CMD_COLOR]}${BUFFER}${reset_color}
@@ -149,14 +219,11 @@ hook-accept-line() {
   zle reset-prompt
   
   zle accept-line
-#  print -N "$init_buffer"
-  echo -en "\r${PS1}${init_buffer}"
- # LBUFFER="lbuffer test"
+   print -PN "\r${PS1}${init_buffer}"
 
 }
 zle -N hook-accept-line
 bindkey "^M" hook-accept-line
-
 
 dyn_exit(){
 	sched +$STAT_IND_LEN delim_reset
