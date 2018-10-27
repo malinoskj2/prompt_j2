@@ -121,7 +121,7 @@ init_globals() {
   BCOLOR=green   # color of symbol next to branch name
 
   #pastcmd color
-  PAST_CMD_COLOR=yellow; # The color that past entered cmds will show as
+  PAST_CMD_COLOR=green; # The color that past entered cmds will show as
 }
 
 vcs_cfg() {
