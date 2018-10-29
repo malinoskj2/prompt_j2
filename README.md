@@ -31,6 +31,6 @@ IDLE_FUNC=exit IDLE_FUNC_TIMER=3600
 ## Install
 ```
 1. Clone the repo: 
-   git clone https://github.com/malinoskj2/prompt_j2.git
+   git clone --recurse-submodules https://github.com/malinoskj2/prompt_j2.git
 2. source prompt_loader in your .zshrc
 ```
