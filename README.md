@@ -3,7 +3,7 @@
 A prompt theme for Zsh.
 ```
 ## Overview
-My personal theme. Enjoy it. :smirk: 
+My personal theme. Enjoy it. :smirk:<br />
 Will be in a state of flux for a bit.
 
 ## Behavior
