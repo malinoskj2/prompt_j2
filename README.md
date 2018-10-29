@@ -15,6 +15,13 @@ Will be in a state of flux for a bit.
 #### Past prompts still only burn 1 line when prompt is expanded to 2
 ![ctx_info](https://media.giphy.com/media/BpDg5nTFouC7He0Dit/giphy.gif)
 
+##### Can set an "idle function"
+- This is a function that will be calle when the tty has been idle for some time.
+ex.
+```
+# Terminal will exit if no prompts in 60 min
+IDLE_FUNC=exit IDLE_FUNC_TIMER=3600 
+```
 ## todo
 ```
 1. Support ssh
