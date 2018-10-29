@@ -14,7 +14,8 @@ prompt_j2_setup() {
   add-zsh-hook precmd compose_vcs
 
   add-zsh-hook precmd kill_outstanding_scheds
-  add-zsh-hook precmd dyn_exit
+  add-zsh-hook precmd sched_dyn_exit
+  add-zsh-hook precmd sched_idle_func
   add-zsh-hook preexec kill_outstanding_scheds
 
   add-zsh-hook precmd comp_prompt_variants
@@ -38,40 +39,6 @@ set_stat_time() {
   PS1="${NAME_SEC} $cur_time "
 }
 
-set_stat_spinner() {
-
-    local spinner=("🕛"
-                   "🕐"
-                   "🕑"
-                   "🕒"
-                   "🕓"
-                   "🕔"
-                   "🕕"
-                   "🕖"
-                   "🕗"
-                   "🕘"
-                   "🕙"
-                   "🕚" )
-   let "spin_index = ($IDLE_CTR % $#spinner) + 1"
-   let "midpoint = $COLUMNS / 2 + 34"
-
-   if [[ $TTYIDLE -lt 60 ]]; then
-     local away_time=$TTYIDLE
-     local away_time="$away_time sec"
-   elif [[ $TTYIDLE -lt 3600 ]]; then
-     let "away_time = $TTYIDLE / 60"
-     local away_time="$away_time min"
-   else
-     let "away_time = $TTYIDLE / 3600"
-     local away_time="$away_time hours"
-   fi
-
-   local mid_clock=${(l:${midpoint}:: ::${spinner[$spin_index]} idle ${away_time}  :)}
-   print -PN "\r${mid_clock}"
-   hide_cursor
-   let "IDLE_CTR = $IDLE_CTR + 1"
-}
-
 show_cursor(){
    print -PN "\e[?25h"
 }
@@ -81,22 +48,7 @@ hide_cursor(){
 }
 
 init_async() {
-   IDLE_CTR=0
 
-   async_start_worker time_updater -n
-
-    callback() {
-      if [[ "$TTYIDLE" -gt  "1800" ]]; then
-        set_stat_spinner
-        async_job time_updater sleep .5
-      else
-         async_job time_updater sleep 3
-      fi
-    }
-
-  async_register_callback time_updater callback
-
-  async_job  time_updater sleep 1
 }
 
 init_globals() {
@@ -111,6 +63,11 @@ init_globals() {
   SUCC_OUT="✓"   # symbol to be temporarily shown after a command exits with status 0
   FAIL_OUT="x"   # symbol to be temporarily shown after a command exits with status 1
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
+  
+  # idle_func and trigger time
+  IDLE_FUNC=exit
+  IDLE_FUNC_TIMER=3600 # Seconds
+
 
   # directory context styling
   DIR_SYM="▪ "      # symbol next to directory name
@@ -225,7 +182,7 @@ hook-accept-line() {
 zle -N hook-accept-line
 bindkey "^M" hook-accept-line
 
-dyn_exit(){
+sched_dyn_exit(){
 	sched +$STAT_IND_LEN delim_reset
 }
 
@@ -239,6 +196,12 @@ delim_reset(){
 
   zle && zle reset-prompt
 }
+
+sched_idle_func() {
+
+       sched +$IDLE_FUNC_TIMER $IDLE_FUNC
+}
+
 
 cleanup() {
   zle && 
