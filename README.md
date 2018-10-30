@@ -19,7 +19,8 @@ Will be in a state of flux for a bit.
 - This is a function that will be called when the tty has been idle for some time.
 ```
 # Terminal will exit if no prompts in 60 min
-IDLE_FUNC=exit IDLE_FUNC_TIMER=3600 
+IDLE_FUNC=exit<br />
+IDLE_FUNC_TIMER=3600 
 ```
 ## todo
 ```
