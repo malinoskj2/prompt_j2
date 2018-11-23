@@ -1,15 +1,21 @@
 #!/usr/bin/env zsh
 
+autoload -U colors && colors
+
 # Various helper functions for the prompt
 
+color(){
+  print -Pn "%{$fg[${2}]%}${1}%{$reset_color%}"
+}
+
 get_time() { 
-  print -P '[%D{%L:%M:%S %p}]'
+  print -Pn '[%D{%L:%M:%S %p}]'
 }
 
 show_cursor(){
-  print -P "\e[?25h"
+  print -Pn "\e[?25h"
 }
 
 hide_cursor(){
-  print -P "\e[?25l"
+  print -Pn "\e[?25l"
 }
