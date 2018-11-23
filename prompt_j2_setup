@@ -6,11 +6,12 @@ prompt_j2_setup() {
                 percent
                 bang )
 
+  init_vcs
   init_globals
   init_async
-  init_vcs
 
-  add-zsh-hook precmd compose_vcs
+  add-zsh-hook precmd run_vcs_script
+
 
   add-zsh-hook precmd kill_outstanding_scheds
   add-zsh-hook precmd sched_dyn_exit
@@ -61,24 +62,8 @@ init_globals() {
   PAST_CMD_COLOR=magenta; # The color that past entered cmds will show as
 }
 
-init_vcs(){
-  zstyle ':vcs_info:*' enable git
-  zstyle ':vcs_info:git:*' formats '[%b]'
-}
-
-compose_vcs() {
-  vcs_info
-  local branch_name=${vcs_info_msg_0_}
-  local BSYMBOL="%{$fg[green]%}${BRANCH_SYM}%{$reset_color%}"
-
-  let bsym_len="$#BSYMBOL / 4"
-
-  let BOUT_LEN="$(echo $#branch_name) + $#bsym_len - 4"
-  BOUT="${BSYMBOL} ${branch_name}"
-  
-  len=$BOUT_LEN
-  ((  left_padding_len =  $COLUMNS - len - 1 ))
-  LEFT_PADDING=${(l:${left_padding_len}:: ::$BOUT:)}
+run_vcs_script() {
+  run_vcs [ ] $BRANCH_SYM
 }
 
 
@@ -93,8 +78,7 @@ set_dyn() {
 }
 
 set_2ldyn() {
-  PS1="${LEFT_PADDING}
-${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "
+  PS1="${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "
 }
 
 set_stat() {
@@ -102,8 +86,7 @@ set_stat() {
 }
 
 set_2lstat(){
-  PS1="${LEFT_PADDING}
-${NAME_SEC} ${DEF_OUT} "
+  PS1="${NAME_SEC} ${DEF_OUT} "
 }
 
 set_minimal() {
@@ -113,9 +96,7 @@ set_minimal() {
 
 compose_ps1() {
 
-  len=$BOUT_LEN
-
-  if [[ $len -gt 0 ]]; then
+  if (inside_git_repo); then
 	  set_2ldyn
   else
 	  set_dyn
@@ -160,7 +141,7 @@ sched_dyn_exit(){
 
 delim_reset(){
 
-  if [[ $len -gt 0 ]]; then
+  if (inside_git_repo); then
     set_2lstat
   else
 	  set_stat

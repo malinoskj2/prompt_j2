@@ -16,7 +16,7 @@ autoload -Uz zsh/zle
 autoload -Uz vcs_info
 
 source "${SCRIPT_DIR}/prompt_j2_helpers"
-
+source "${SCRIPT_DIR}/prompt_j2_vcs"
 
 async_init 
 promptinit

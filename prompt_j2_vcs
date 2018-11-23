@@ -1,17 +1,20 @@
 #!/usr/bin/env zsh
 
+autoload -Uz promptinit
+autoload -U colors && colors
+autoload -Uz add-zsh-hook
+autoload -Uz zsh/zle
 autoload -Uz vcs_info
 
 source "${SCRIPT_DIR}/prompt_j2_helpers"
 
 # Provide relevant vcs info to the prompt
-
-
 start_message() {
   print -P "$1"
 }
 
 change_exists() {
+
   if [[ `git status --porcelain` ]]; then
     return 0;
   else
@@ -19,28 +22,18 @@ change_exists() {
   fi
 }
 
-init_vcs(){
-  zstyle ':vcs_info:*' enable git
-  zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' unstagedstr "$(color ! red)"
-  zstyle ':vcs_info:*' stagedstr "$(color + green)"
-  zstyle ':vcs_info:git:*' formats '%b%u%c'
+inside_git_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
-LEFT='';
-RIGHT='';
 
-# echos a decorated vcs string
-compose_vcs() {
+init_vcs(){
 
-
-  if (change_exists); then
-    local decorated="$(color $LEFT red)${vcs_info_msg_0_}$(color $RIGHT red)"
-  else
-    local decorated="${LEFT}${vcs_info_msg_0_}${RIGHT}"
-  fi
-
-  print -Pn $decorated
+  zstyle ':vcs_info:*' enable git
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' unstagedstr '+'
+  zstyle ':vcs_info:*' stagedstr '+'
+  zstyle ':vcs_info:git:*' formats '%b%u%c'
 }
 
 run_vcs() {
@@ -49,14 +42,27 @@ run_vcs() {
   if [[ (! -n $1) || (! -n $2)]]; then
     print "please provide prompt_j2_vcs with the required args"
     exit 1
-  fi
+  else
 
   LEFT=$1   # delimiter for left of vcs string
   RIGHT=$2  # delimiter for right of vcs string
+  BSYM="$3 "    # branch symbol
 
-  print -Pn  "$(compose_vcs)"
+  if (inside_git_repo); then
+      if (change_exists); then
+        local decorated="$(color ${BSYM} red)$(color $LEFT red)${vcs_info_msg_0_}$(color $RIGHT red)"
+      else
+        local decorated="$(color ${BSYM} green)$(color $LEFT green)${vcs_info_msg_0_}$(color $RIGHT green)"
+      fi
+  fi
+
+  info_message="$(print -Pn ${vcs_info_msg_0_})"
+
+  let "padding = $COLUMNS - ( $#info_message + $#LEFT + $#RIGHT + 2)  "
+
+  printf "%-*s%s\n" $padding "" $decorated
+  # print $decorated
+
+  fi
 }
-
-init_vcs
-run_vcs $1 $2
 

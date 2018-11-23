@@ -8,6 +8,7 @@ color(){
   print -Pn "%{$fg[${2}]%}${1}%{$reset_color%}"
 }
 
+
 get_time() { 
   print -Pn '[%D{%L:%M:%S %p}]'
 }
@@ -19,3 +20,4 @@ show_cursor(){
 hide_cursor(){
   print -Pn "\e[?25l"
 }
+
