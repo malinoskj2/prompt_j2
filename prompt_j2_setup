@@ -27,28 +27,27 @@ prompt_j2_setup() {
 
 }
 
-
 set_stat_time() {
   local cur_time='[%D{%L:%M:%S %p}]'
-#  PS1="${NAME_SEC} $cur_time ${DEF_OUT} "
   PS1="${NAME_SEC} $cur_time "
 }
 
 show_cursor(){
-   print -PN "\e[?25h"
+  print -PN "\e[?25h"
 }
 
 hide_cursor(){
-   print -PN "\e[?25l"
+  print -PN "\e[?25l"
 }
 
+# TODO
 init_async() {
-
+ 
 }
 
 init_globals() {
 
-  #The symbols surrounding your username
+  # The symbols surrounding your username
   NAME_OUTR_LEFT="("
   NAME_OUTR_RIGHT=")"
   NAME_OUTR_COLOR=magenta # the symbol color
@@ -77,9 +76,9 @@ init_globals() {
 }
 
 vcs_cfg() {
-    vcs_info
-    zstyle ':vcs_info:*' enable git
-    zstyle ':vcs_info:git:*' formats '[%b]'
+  vcs_info
+  zstyle ':vcs_info:*' enable git
+  zstyle ':vcs_info:git:*' formats '[%b]'
 }
 
 compose_vcs() {
@@ -98,11 +97,9 @@ compose_vcs() {
 
 
 comp_prompt_variants() {
-
   PTR_SUCC="%{$fg[green]%}${SUCC_OUT}%{$reset_color%}"
   PTR_FAIL="%{$fg[red]%}${FAIL_OUT}%{$reset_color%}"
   NAME_SEC="%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_LEFT%{$reset_color%}%b%n%B%{$fg[$NAME_OUTR_COLOR]%}$NAME_OUTR_RIGHT%{$reset_color%}%b"
-  
 }
 
 set_dyn() {
@@ -110,10 +107,8 @@ set_dyn() {
 }
 
 set_2ldyn() {
-  
   PS1="${LEFT_PADDING}
 ${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "
-
 }
 
 set_stat() {
@@ -121,14 +116,13 @@ set_stat() {
 }
 
 set_2lstat(){
-        PS1="${LEFT_PADDING}
+  PS1="${LEFT_PADDING}
 ${NAME_SEC} ${DEF_OUT} "
 }
 
 set_minimal() {
   PS1="$DEF_OUT "
   RPS1="-"
-
 }
 
 compose_ps1() {
@@ -136,11 +130,10 @@ compose_ps1() {
   len=$BOUT_LEN
 
   if [[ $len -gt 0 ]]; then
-	set_2ldyn
+	  set_2ldyn
   else
-	set_dyn
+	  set_dyn
   fi
-
 }
 
 compose_rps1() {
@@ -164,14 +157,12 @@ kill_outstanding_scheds() {
 hook-accept-line() {
 
   set_minimal
-
   local init_buffer=${fg[$PAST_CMD_COLOR]}${BUFFER}${reset_color}
-  # local init_buffer=$BUFFER
 
   zle reset-prompt
   
   zle accept-line
-   print -PN "\r${PS1}${init_buffer}"
+  print -PN "\r${PS1}${init_buffer}"
 
 }
 zle -N hook-accept-line
@@ -184,17 +175,16 @@ sched_dyn_exit(){
 delim_reset(){
 
   if [[ $len -gt 0 ]]; then
-        set_2lstat
+    set_2lstat
   else
-	set_stat
+	  set_stat
   fi
 
   zle && zle reset-prompt
 }
 
 sched_idle_func() {
-
-       sched +$IDLE_FUNC_TIMER $IDLE_FUNC
+  sched +$IDLE_FUNC_TIMER $IDLE_FUNC
 }
 
 
