@@ -9,6 +9,7 @@ prompt_j2_setup() {
   init_globals
   init_async
 
+
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
 
@@ -25,19 +26,6 @@ prompt_j2_setup() {
 
   prompt_cleanup cleanup
 
-}
-
-set_stat_time() {
-  local cur_time='[%D{%L:%M:%S %p}]'
-  PS1="${NAME_SEC} $cur_time "
-}
-
-show_cursor(){
-  print -PN "\e[?25h"
-}
-
-hide_cursor(){
-  print -PN "\e[?25l"
 }
 
 # TODO
