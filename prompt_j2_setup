@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#/usr/local/bin/zsh
 
 prompt_j2_setup() {
 
@@ -9,7 +9,6 @@ prompt_j2_setup() {
   init_globals
   init_async
 
-  add-zsh-hook precmd dir_cfg
   add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
 
@@ -28,10 +27,6 @@ prompt_j2_setup() {
 
 }
 
-dir_cfg() {
-  # directory context info
-  DIR_NAME=${$( basename $(pwd))}
-}
 
 set_stat_time() {
   local cur_time='[%D{%L:%M:%S %p}]'
@@ -149,8 +144,8 @@ compose_ps1() {
 }
 
 compose_rps1() {
-  local dsymbol=%{$fg[$DCOLOR]%}$DIR_SYM%{$reset_color%}
-  RPS1="${dsymbol}${DIR_NAME}"
+  local this_dir=$(print -P "%1d")
+  RPS1="%{$fg[$DCOLOR]%}$DIR_SYM%{$reset_color%}${this_dir}" 
 }
 
 # Kill any scheduled events that have not been executed before a new command is entered
