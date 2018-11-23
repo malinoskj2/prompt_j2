@@ -8,9 +8,8 @@ prompt_j2_setup() {
 
   init_globals
   init_async
+  init_vcs
 
-
-  add-zsh-hook precmd vcs_cfg
   add-zsh-hook precmd compose_vcs
 
   add-zsh-hook precmd kill_outstanding_scheds
@@ -50,7 +49,6 @@ init_globals() {
   IDLE_FUNC=exit
   IDLE_FUNC_TIMER=3600 # Seconds
 
-
   # directory context styling
   DIR_SYM="▪ "      # symbol next to directory name
   DCOLOR=cyan    # color of symbol next to dir
@@ -63,13 +61,13 @@ init_globals() {
   PAST_CMD_COLOR=magenta; # The color that past entered cmds will show as
 }
 
-vcs_cfg() {
-  vcs_info
+init_vcs(){
   zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:git:*' formats '[%b]'
 }
 
 compose_vcs() {
+  vcs_info
   local branch_name=${vcs_info_msg_0_}
   local BSYMBOL="%{$fg[green]%}${BRANCH_SYM}%{$reset_color%}"
 
