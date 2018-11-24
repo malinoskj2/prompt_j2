@@ -1,7 +1,11 @@
-# prompt_j2
-```
-A prompt theme for Zsh.
-```
+<p align="left">
+  <h1 align="left">prompt_j2</h2>
+  <a href="https://travis-ci.org/malinoskj2/prompt_j2">
+    <img src="https://travis-ci.org/malinoskj2/prompt_j2.svg?branch=master"
+      alt="CI" />
+  </a>
+</p>
+
 ## Overview
 My personal theme. Enjoy it. :smirk:<br />
 Will be in a state of flux for a bit.
@@ -22,6 +26,14 @@ Will be in a state of flux for a bit.
 IDLE_FUNC=exit  
 IDLE_FUNC_TIMER=3600 
 ```
+## Testing
+```
+1. Clone the repo
+2. cd into the root directory of project 
+3. execute ./tests/run_all.sh
+```
+
+
 ## todo
 ```
 1. Support ssh
