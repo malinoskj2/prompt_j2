@@ -25,9 +25,8 @@ IDLE_FUNC_TIMER=3600
 ## todo
 ```
 1. Support ssh
-2. Show additional git info
-3. Check against remote git repo branch asynchronously
-4. ???
+2. Check against remote git repo branch asynchronously
+3. ???
 ```
 ## Install
 ```
