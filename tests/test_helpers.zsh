@@ -1,10 +1,14 @@
 #!/usr/bin/env zsh
-autoload -U colors && colors
 
+# tests for prompt_j2_helpers
+
+# sh unit needs
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
 source ../prompt_j2_helpers
+
+# TESTS
 
 testColor() {
   print -Pn "%{$fg[${2}]%}${1}%{$reset_color%}"
@@ -28,6 +32,6 @@ testTimeUpdate() {
    assertNotEquals "$cur" "$new"
 }
 
+
+# run the tests
 source ../mod/shunit2/shunit2
-
-

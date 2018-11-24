@@ -28,7 +28,6 @@ inside_git_repo() {
 
 
 init_vcs(){
-
   zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' check-for-changes true
   zstyle ':vcs_info:*' unstagedstr '+'
@@ -61,7 +60,6 @@ run_vcs() {
   let "padding = $COLUMNS - ( $#info_message + $#LEFT + $#RIGHT + 2)  "
 
   printf "%-*s%s\n" $padding "" $decorated
-  # print $decorated
 
   fi
 }
