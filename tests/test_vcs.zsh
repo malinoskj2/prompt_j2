@@ -10,6 +10,7 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
+  source ../prompt_j2_helpers
   source ../prompt_j2_vcs
 }
 

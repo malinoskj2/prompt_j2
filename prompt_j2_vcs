@@ -6,6 +6,8 @@ autoload -Uz add-zsh-hook
 autoload -Uz zsh/zle
 autoload -Uz vcs_info
 
+
+SCRIPT_DIR=${0:a:h}
 source "${SCRIPT_DIR}/prompt_j2_helpers"
 
 # Provide relevant vcs info to the prompt
