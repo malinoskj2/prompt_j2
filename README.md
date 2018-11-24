@@ -1,9 +1,19 @@
 <p align="left">
   <h1 align="left">prompt_j2</h2>
+  
   <a href="https://travis-ci.org/malinoskj2/prompt_j2">
     <img src="https://travis-ci.org/malinoskj2/prompt_j2.svg?branch=master"
       alt="CI" />
   </a>
+  <a href="https://github.com/malinoskj2/prompt_j2/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/malinoskj2/prompt_j2.svg"
+        alt="License" />
+  </a>
+  <a href="https://github.com/malinoskj2/prompt_j2/commits">
+    <img src="https://img.shields.io/github/last-commit/malinoskj2/prompt_j2.svg"
+      alt="Last Commit" />
+  </a>
+
 </p>
 
 ## Overview

@@ -7,7 +7,7 @@ echo "Running all tests."
 echo  "SCRIPT_DIR: $SCRIPT_DIR"
 
 echo "------------------------------\n\n"
-# TESTS="find . -type f -name "test*"
+
 for file in $SCRIPT_DIR/test*; do
     echo "Running: '$file'\n"
     $file
