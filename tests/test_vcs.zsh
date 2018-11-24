@@ -6,7 +6,12 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
-source ../prompt_j2_vcs
+
+# SETUP
+
+oneTimeSetUp() {
+  source ../prompt_j2_vcs
+}
 
 # TESTS
 
