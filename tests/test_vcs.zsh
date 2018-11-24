@@ -10,8 +10,8 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
-  source ../prompt_j2_helpers
-  source ../prompt_j2_vcs
+  source ../lib/prompt_j2_helpers
+  source ../lib/prompt_j2_vcs
 }
 
 # TESTS
@@ -35,7 +35,6 @@ testRunVcs(){
   assertNotContains "$vcs_string" "green"
   assertNotContains "$vcs_string" "red"
   assertNotContains "$vcs_string" "%"
-  assertContains    "$vcs_string" "test"
 }
 
 

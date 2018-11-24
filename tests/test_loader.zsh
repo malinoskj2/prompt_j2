@@ -16,14 +16,14 @@ oneTimeSetUp() {
 # TEST
 
 testFilesExist(){
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/mod/zsh-async/async.zsh ]"
-  assertTrue 'couldnt read' "[ -r $SCRIPT_DIR/mod/zsh-autosuggestions/zsh-autosuggestions.zsh ]"
-  assertTrue 'couldnt read' "[ -d ${SCRIPT_DIR}/mod/shunit2 ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/../mod/zsh-async/async.zsh ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/../mod/zsh-autosuggestions/zsh-autosuggestions.zsh ]"
+  assertTrue 'couldnt read' "[ -d ${0:a:h}/../mod/shunit2 ]"
   assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_helpers ]"
   assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_vcs ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_loader ]"
+  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/../prompt_j2_loader ]"
   assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_setup ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/README.md ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/../README.md ]"
 }
 
 testThemeSet(){

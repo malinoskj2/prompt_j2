@@ -9,8 +9,8 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
-  source ../prompt_j2_setup # &> /dev/null
-  source ../prompt_j2_vcs # &> /dev/null
+  source ../lib/prompt_j2_setup # &> /dev/null
+  source ../lib/prompt_j2_vcs # &> /dev/null
 
   init_globals # Set global variables
   init_vcs     # set vcs_info formatting
