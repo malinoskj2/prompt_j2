@@ -2,6 +2,9 @@
 
 SCRIPT_DIR=${0:a:h}
 
+# Add prompt theme to fpath 
+PATH=${SCRIPT_DIR}/lib:$PATH; export PATH
+FPATH=${SCRIPT_DIR}/lib:$FPATH; export FPATH
 
 # Set the theme to use ;)
 zprompt_theme='j2'
@@ -15,8 +18,8 @@ autoload -Uz add-zsh-hook
 autoload -Uz zsh/zle
 autoload -Uz vcs_info
 
-source "${SCRIPT_DIR}/prompt_j2_helpers"
-source "${SCRIPT_DIR}/prompt_j2_vcs"
+source "${SCRIPT_DIR}/lib/prompt_j2_helpers"
+source "${SCRIPT_DIR}/lib/prompt_j2_vcs"
 
 async_init 
 promptinit
@@ -26,4 +29,4 @@ prompt j2
 prompt j2
 
 ZSH_AUTOSUGGEST_USE_ASYNC=true;
-source "$SCRIPT_DIR/mod/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${0:a:h}/mod/zsh-autosuggestions/zsh-autosuggestions.zsh"
