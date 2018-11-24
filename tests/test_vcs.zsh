@@ -10,8 +10,9 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
-  source ../lib/prompt_j2_helpers
-  source ../lib/prompt_j2_vcs
+  SCRIPT_DIR=${0:a:h}
+  source $SCRIPT_DIR/lib/prompt_j2_helpers
+  source $SCRIPT_DIR/lib/prompt_j2_vcs
 }
 
 # TESTS
@@ -30,7 +31,7 @@ testRunVcs(){
 
   init_vcs
 
-  local vcs_string=$(run_vcs [ ] $BRANCH_SYM)
+  vcs_string=$(run_vcs [ ] $BRANCH_SYM)
 
   assertNotContains "$vcs_string" "green"
   assertNotContains "$vcs_string" "red"
@@ -39,4 +40,4 @@ testRunVcs(){
 
 
 # run the tests
-source ../mod/shunit2/shunit2
+source ./mod/shunit2/shunit2

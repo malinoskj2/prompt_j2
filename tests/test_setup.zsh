@@ -9,8 +9,10 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
-  source ../lib/prompt_j2_setup # &> /dev/null
-  source ../lib/prompt_j2_vcs # &> /dev/null
+  SCRIPT_DIR=${0:a:h}
+  
+  source $SCRIPT_DIR/lib/prompt_j2_setup # &> /dev/null
+  source $SCRIPT_DIR/lib/prompt_j2_vcs # &> /dev/null
 
   init_globals # Set global variables
   init_vcs     # set vcs_info formatting
@@ -106,4 +108,4 @@ testKillOutstandinScheds(){
 
 
 # run the tests
-source ../mod/shunit2/shunit2
+source ./mod/shunit2/shunit2

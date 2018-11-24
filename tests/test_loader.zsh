@@ -10,20 +10,21 @@ SHUNIT_PARENT=$0
 # SETUP
 
 oneTimeSetUp() {
-  source ../prompt_j2_loader &> /dev/null
+  SCRIPT_DIR=${0:a:h}
+  source $SCRIPT_DIR/prompt_j2_loader &> /dev/null
 }
 
 # TEST
 
 testFilesExist(){
-  assertTrue 'couldnt read' "[ -r ${0:a:h}/../mod/zsh-async/async.zsh ]"
-  assertTrue 'couldnt read' "[ -r ${0:a:h}/../mod/zsh-autosuggestions/zsh-autosuggestions.zsh ]"
-  assertTrue 'couldnt read' "[ -d ${0:a:h}/../mod/shunit2 ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_helpers ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_vcs ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/../prompt_j2_loader ]"
-  assertTrue 'couldnt read' "[ -r ${SCRIPT_DIR}/prompt_j2_setup ]"
-  assertTrue 'couldnt read' "[ -r ${0:a:h}/../README.md ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/mod/zsh-async/async.zsh ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/mod/zsh-autosuggestions/zsh-autosuggestions.zsh ]"
+  assertTrue 'couldnt read' "[ -d ${0:a:h}/mod/shunit2 ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/lib/prompt_j2_helpers ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/lib/prompt_j2_vcs ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/prompt_j2_loader ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/lib/prompt_j2_setup ]"
+  assertTrue 'couldnt read' "[ -r ${0:a:h}/README.md ]"
 }
 
 testThemeSet(){
@@ -40,4 +41,4 @@ testAsyncOn(){
 }
 
 # run the tests
-source ../mod/shunit2/shunit2
+source ./mod/shunit2/shunit2

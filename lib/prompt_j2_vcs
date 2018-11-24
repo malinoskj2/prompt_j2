@@ -17,7 +17,9 @@ start_message() {
 
 change_exists() {
 
-  if [[ `git status --porcelain` ]]; then
+  local changed="$(git status --porcelain)"
+
+  if [ "$#changed" -ne "0" ]; then
     return 0;
   else
     return 1;

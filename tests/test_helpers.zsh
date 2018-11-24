@@ -6,10 +6,13 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+
+
 # SETUP
 
 oneTimeSetUp() {
-  source ../lib/prompt_j2_helpers
+  SCRIPT_DIR=${0:a:h};
+  source ${SCRIPT_DIR}/lib/prompt_j2_helpers
 }
 
 # TESTS
@@ -29,12 +32,5 @@ testColoredLen() {
   assertNotEquals 4 "$#c_word_len"
 }
 
-testTimeUpdate() {
-   local cur=$(print -Pn '[%D{%L:%M:%S %p}]')
-   sleep 1
-   local new=$(get_time)
-   assertNotEquals "$cur" "$new"
-}
-
 # run the tests
-source ../mod/shunit2/shunit2
+source ./mod/shunit2/shunit2

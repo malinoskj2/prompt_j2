@@ -1,0 +1,18 @@
+language: generic
+os: linux
+sudo: true
+addons:
+  apt:
+    update: true
+    packages:
+      - zsh
+install:
+  - sudo chsh -s $(which zsh)
+before_install:
+  - export PATH="$PATH:$HOME/build/malinoskj2/prompt_j2/tests"
+  - export PATH="$PATH:$HOME/build/malinoskj2/prompt_j2"
+before_script:
+  - zsh --version
+
+script:
+  - tests/run_all.sh
