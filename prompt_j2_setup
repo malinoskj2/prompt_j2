@@ -12,7 +12,6 @@ prompt_j2_setup() {
 
   add-zsh-hook precmd run_vcs_script
 
-
   add-zsh-hook precmd kill_outstanding_scheds
   add-zsh-hook precmd sched_dyn_exit
   add-zsh-hook precmd sched_idle_func
@@ -66,7 +65,6 @@ run_vcs_script() {
   run_vcs [ ] $BRANCH_SYM
 }
 
-
 comp_prompt_variants() {
   PTR_SUCC="%{$fg[green]%}${SUCC_OUT}%{$reset_color%}"
   PTR_FAIL="%{$fg[red]%}${FAIL_OUT}%{$reset_color%}"
@@ -77,15 +75,7 @@ set_dyn() {
   PS1="${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "   
 }
 
-set_2ldyn() {
-  PS1="${NAME_SEC} %(?.$PTR_SUCC.$PTR_FAIL) "
-}
-
 set_stat() {
-  PS1="${NAME_SEC} ${DEF_OUT} "
-}
-
-set_2lstat(){
   PS1="${NAME_SEC} ${DEF_OUT} "
 }
 
@@ -95,12 +85,7 @@ set_minimal() {
 }
 
 compose_ps1() {
-
-  if (inside_git_repo); then
-	  set_2ldyn
-  else
 	  set_dyn
-  fi
 }
 
 compose_rps1() {
@@ -109,8 +94,6 @@ compose_rps1() {
 }
 
 # Kill any scheduled events that have not been executed before a new command is entered
-# TODO remove dependency on sched,
-# use zsh async lib potentially
 kill_outstanding_scheds() {
   for ((i = 1; i <= $#zsh_scheduled_events; i++)); do
     sched -$i
@@ -141,11 +124,7 @@ sched_dyn_exit(){
 
 delim_reset(){
 
-  if (inside_git_repo); then
-    set_2lstat
-  else
-	  set_stat
-  fi
+  set_stat
 
   zle && zle reset-prompt
 }
@@ -153,7 +132,6 @@ delim_reset(){
 sched_idle_func() {
   sched +$IDLE_FUNC_TIMER $IDLE_FUNC
 }
-
 
 cleanup() {
   zle && 

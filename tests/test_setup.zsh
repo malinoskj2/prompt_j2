@@ -72,5 +72,38 @@ testSetDyn(){
   assertNotContains "$PS1" "}"
 }
 
+testSetDyn(){
+  set_stat
+
+  assertContains "$PS1" "$NAME_SEC"
+  assertContains "$PS1" "$DEF_OUT"
+}
+
+testSetMin(){
+  set_minimal
+  assertContains "$PS1" "$DEF_OUT"
+}
+
+testComposePs1(){
+  compose_ps1
+
+  assertContains "$PS1" "$NAME_SEC"
+  assertNotContains "$PS1" "red"
+  assertNotContains "$PS1" "green"
+
+}
+
+testSchedDynExit(){
+  sched_dyn_exit
+  assertEquals "1" "$#zsh_scheduled_events"
+}
+
+testKillOutstandinScheds(){
+  kill_outstanding_scheds
+  assertEquals "0" "$#zsh_scheduled_events"
+}
+
+
+
 # run the tests
 source ../mod/shunit2/shunit2
