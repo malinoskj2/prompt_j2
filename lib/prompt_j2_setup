@@ -10,7 +10,7 @@ prompt_j2_setup() {
   init_globals
   init_async
 
-  add-zsh-hook precmd run_vcs_script
+  add-zsh-hook precmd maybe_run_vcs_script
 
   add-zsh-hook precmd kill_outstanding_scheds
   add-zsh-hook precmd sched_dyn_exit
@@ -25,6 +25,13 @@ prompt_j2_setup() {
 
   prompt_cleanup cleanup
 
+}
+
+# Only call vcs module if in vcs dir to begin with
+function maybe_run_vcs_script() {
+  if $(inside_git_repo); then
+    run_vcs_script
+  fi
 }
 
 # TODO
