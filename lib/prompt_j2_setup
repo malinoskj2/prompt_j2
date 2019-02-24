@@ -112,7 +112,7 @@ kill_outstanding_scheds() {
 # to zsh
 # Called whenever enter is pressed
 hook-accept-line() {
-
+  zle _expand_alias
   set_minimal
   local init_buffer=${fg[$PAST_CMD_COLOR]}${BUFFER}${reset_color}
 
