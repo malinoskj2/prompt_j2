@@ -44,7 +44,7 @@ init_globals() {
   # The symbols surrounding your username
   NAME_OUTR_LEFT="("
   NAME_OUTR_RIGHT=")"
-  NAME_OUTR_COLOR=magenta # the symbol color
+  NAME_OUTR_COLOR=normal # the symbol color
 
   # symbols for adaptive delimiter
   DEF_OUT="‣"    # default symbol delimiting prompt from command
@@ -65,7 +65,7 @@ init_globals() {
   BCOLOR=green   # color of symbol next to branch name
 
   #pastcmd color
-  PAST_CMD_COLOR=magenta; # The color that past entered cmds will show as
+  PAST_CMD_COLOR=red; # The color that past entered cmds will show as
 }
 
 run_vcs_script() {
