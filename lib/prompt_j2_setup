@@ -48,12 +48,12 @@ init_globals() {
 
   # symbols for adaptive delimiter
   DEF_OUT="‣"    # default symbol delimiting prompt from command
-  SUCC_OUT="✓"   # symbol to be temporarily shown after a command exits with status 0
-  FAIL_OUT="x"   # symbol to be temporarily shown after a command exits with status 1
+  SUCC_OUT="‣"   # symbol to be temporarily shown after a command exits with status 0
+  FAIL_OUT="‣"   # symbol to be temporarily shown after a command exits with status 1
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
   
   # idle_func and trigger time
-  IDLE_FUNC=exit
+  IDLE_FUNC=
   IDLE_FUNC_TIMER=3600 # Seconds
 
   # directory context styling
