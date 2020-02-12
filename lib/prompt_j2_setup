@@ -137,7 +137,9 @@ delim_reset(){
 }
 
 sched_idle_func() {
-  sched +$IDLE_FUNC_TIMER $IDLE_FUNC
+  if $IDLE_FUNC; then
+    sched +$IDLE_FUNC_TIMER $IDLE_FUNC
+  fi
 }
 
 cleanup() {
