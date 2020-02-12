@@ -10,7 +10,6 @@ FPATH=${SCRIPT_DIR}/lib:$FPATH; export FPATH
 zprompt_theme='j2'
 
 # Autoload dependencies
-source "${SCRIPT_DIR}/mod/zsh-async/async.zsh"
 
 autoload -Uz promptinit
 autoload -U colors && colors
@@ -21,7 +20,6 @@ autoload -Uz vcs_info
 source "${SCRIPT_DIR}/lib/prompt_j2_helpers"
 source "${SCRIPT_DIR}/lib/prompt_j2_vcs"
 
-async_init 
 promptinit
 
 prompt j2
