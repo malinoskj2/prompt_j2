@@ -8,13 +8,11 @@ prompt_j2_setup() {
 
   init_vcs
   init_globals
-  init_async
 
   add-zsh-hook precmd maybe_run_vcs_script
 
   add-zsh-hook precmd kill_outstanding_scheds
   add-zsh-hook precmd sched_dyn_exit
-  add-zsh-hook precmd sched_idle_func
   add-zsh-hook preexec kill_outstanding_scheds
 
   add-zsh-hook precmd comp_prompt_variants
@@ -34,11 +32,6 @@ function maybe_run_vcs_script() {
   fi
 }
 
-# TODO
-init_async() {
- 
-}
-
 init_globals() {
 
   # The symbols surrounding your username
@@ -52,10 +45,6 @@ init_globals() {
   FAIL_OUT="‣"   # symbol to be temporarily shown after a command exits with status 1
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
   
-  # idle_func and trigger time
-  IDLE_FUNC=
-  IDLE_FUNC_TIMER=3600 # Seconds
-
   # directory context styling
   DIR_SYM="▪ "      # symbol next to directory name
   DCOLOR=cyan    # color of symbol next to dir
@@ -134,12 +123,6 @@ delim_reset(){
   set_stat
 
   zle && zle reset-prompt
-}
-
-sched_idle_func() {
-  if $IDLE_FUNC; then
-    sched +$IDLE_FUNC_TIMER $IDLE_FUNC
-  fi
 }
 
 cleanup() {
