@@ -1,6 +1,3 @@
-[submodule "mod/zsh-autosuggestions"]
-	path = mod/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "mod/shunit2"]
 	path = mod/shunit2
 	url = https://github.com/kward/shunit2
