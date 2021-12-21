@@ -46,8 +46,8 @@ init_globals() {
   STAT_IND_LEN=2 # length of time in seconds to show status symbol after command completion
   
   # directory context styling
-  DIR_SYM="▪ "      # symbol next to directory name
-  DCOLOR=cyan    # color of symbol next to dir
+  DIR_SYM=""      # symbol next to directory name
+  DCOLOR=normal    # color of symbol next to dir
 
   # branch context styling
   BRANCH_SYM=⎇   # symbol next to git branch name
